@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Rental</title>
+  <title>Lending list of fixtures</title>
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
+<%= current_user.try(:name) %><br>
+
 <%= yield %>
+<br>
+<% if current_user %>
+  <%= link_to 'Sign out', sign_out_path %><br>
+<% else %>
+  <%= link_to 'Sign in', sign_in_path %><br>  
+  <%= link_to 'Sign up', sign_up_path %><br>
+<% end %>
 
 </body>
 </html>

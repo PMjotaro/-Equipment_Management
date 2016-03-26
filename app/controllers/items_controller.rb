@@ -1,5 +1,5 @@
 class ItemsController < ApplicationController
-  before_action :set_item, only: [:show, :edit, :update, :destroy]
+  before_action :set_item, only: [:show, :edit, :update, :destroy, :borrow, :give_back]
 
   # GET /items
   # GET /items.json
@@ -59,6 +59,16 @@ class ItemsController < ApplicationController
       format.html { redirect_to items_url, notice: 'Item was successfully destroyed.' }
       format.json { head :no_content }
     end
+  end
+
+  def borrow
+    @item.lend_to(current_user)
+    redirect_to root_url, :notice => "Lent #{@item.name} to #{current_user.name} !!"
+  end
+  
+  def give_back
+    @item.give_back()
+    redirect_to root_url, :notice => "#{@item.name} was returned form #{current_user.name} !!"
   end
 
   private

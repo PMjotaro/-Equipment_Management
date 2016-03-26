@@ -14,25 +14,30 @@
   <tbody>
     <% @items.each do |item| %>
       <tr>
-        <% 
-          user = item.user
-          status = nil
-          if user.blank?
-            status = "在庫あり"
-          else
-            status = "#{user.name}に貸出中"
-          end
-        %>
-        <td><%= status %></td>
+        <% if item.user == nil %>
+          <td><%= link_to 'Borrow', borrow_path(item), method: :post %></td>
+        <% elsif item.user == current_user %>
+          <td><%= link_to 'Give back', give_back_path(item), method: :post %></td>
+        <% else %>
+          <td><%= "#{item.user.name}に貸出中" %></td>
+        <% end %>
+        
         <td><%= item.name %></td>
-        <td><%= link_to 'Show', item %></td>
-        <td><%= link_to 'Edit', edit_item_path(item) %></td>
-        <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+          
+        <% if current_user %>
+          <td><%= link_to 'Show', item %></td>
+          <td><%= link_to 'Edit', edit_item_path(item) %></td>
+          <!-- <td><%= link_to 'Destroy', item, method: :delete, data: { confirm: 'Are you sure?' } %></td> -->
+        <% end %>
+        </tr>
+          
     <% end %>
   </tbody>
 </table>
 
 <br>
+<% if current_user %>
+  <%= link_to 'ADD New Item', new_item_path %><br>
+<% end %>
 
-<%= link_to 'New Item', new_item_path %>
+<%= link_to 'Users', users_path %>
