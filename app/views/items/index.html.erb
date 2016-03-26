@@ -14,7 +14,16 @@
   <tbody>
     <% @items.each do |item| %>
       <tr>
-        <td><%= item.user_id %></td>
+        <% 
+          user = item.user
+          status = nil
+          if user.blank?
+            status = "在庫あり"
+          else
+            status = "#{user.name}に貸出中"
+          end
+        %>
+        <td><%= status %></td>
         <td><%= item.name %></td>
         <td><%= link_to 'Show', item %></td>
         <td><%= link_to 'Edit', edit_item_path(item) %></td>
